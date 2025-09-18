@@ -12,6 +12,37 @@
     padding: 0;
     color: #003366;
   }
+  /* Navigation bar */
+  .navbar {
+    background-color: #00bcd4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  .navbar .nav-left {
+    display: flex;
+    align-items: center;
+  }
+  .navbar .nav-left img {
+    height: 50px;
+    cursor: pointer;
+    margin-right: 15px;
+  }
+  .navbar .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  .navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+  }
+  .navbar .nav-links a:hover {
+    opacity: 0.8;
+  }
   .hero-image {
     width: 100%;
     display: block;
@@ -152,13 +183,26 @@
 </style>
 </head>
 <body>
-<img src="home.png" alt="Home" class="hero-image">
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-left">
+    <a href="#home"><img src="logo.png" alt="Logo"></a>
+  </div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+</div>
+
+<!-- HERO IMAGE -->
+<img id="home" src="home.png" alt="Home" class="hero-image">
+
 <header>
   <h1>Boogie Boarding Lessons</h1>
-  <img src="logo.png" alt="Boogie Board Logo" class="logo">
 </header>
 
-<div class="plans">
+<!-- PRICING SECTION -->
+<div id="pricing" class="plans">
   <div class="plan">
     <h2>1 Hour Lesson</h2>
     <p>$9</p>
