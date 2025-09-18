@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boogie Boarding Lessons</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(to bottom, #87CEEB, #f0f9ff);
+    margin: 0;
+    padding: 0;
+    color: #003366;
+  }
+  .hero-image {
+    width: 100%;
+    display: block;
+  }
+  header {
+    background-color: #00bcd4;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    position: relative;
+  }
+  header img.logo {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    height: 60px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 2.4em;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .plan {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .plan:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  }
+  .plan h2 {
+    color: #0077b6;
+    margin-bottom: 12px;
+    font-size: 1.5em;
+  }
+  .plan p {
+    margin: 6px 0;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  .plan button {
+    margin-top: 15px;
+    padding: 14px 28px;
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .plan button:hover {
+    background-color: #0097a7;
+  }
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 25px;
+    width: 360px;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+  }
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  input[type="text"], input[type="email"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+  }
+  input[type="submit"] {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  input[type="submit"]:hover {
+    background-color: #0097a7;
+  }
+  /* Responsive */
+  @media (max-width: 940px) {
+    .plans { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  }
+  @media (max-width: 600px) {
+    .plans { grid-template-columns: 1fr; padding: 16px; }
+    header img.logo { height: 48px; right: 12px; top: 12px; }
+  }
+</style>
+</head>
+<body>
+<img src="home.png" alt="Home" class="hero-image">
+<header>
+  <h1>Boogie Boarding Lessons</h1>
+  <img src="logo.png" alt="Boogie Board Logo" class="logo">
+</header>
+
+<div class="plans">
+  <div class="plan">
+    <h2>1 Hour Lesson</h2>
+    <p>$9</p>
+    <p>Great for a quick intro to boogie boarding.</p>
+    <button onclick="openForm('1 Hour Lesson', 10)">Book</button>
+  </div>
+  <div class="plan">
+    <h2>2 Hours</h2>
+    <p>$19</p>
+    <p>Double the time, double the fun!</p>
+    <button onclick="openForm('2 Hours', 20)">Book</button>
+  </div>
+  <div class="plan">
+    <h2>Half-Day (4 Hours)</h2>
+    <p>$34 (Discounted)</p>
+    <p>Perfect for learning the ropes.</p>
+    <button onclick="openForm('Half-Day (4 Hours)', 35)">Book</button>
+  </div>
+  <div class="plan">
+    <h2>Full-Day (8 Hours)</h2>
+    <p>$64 (Bigger Discount)</p>
+    <p>Immerse yourself in boogie boarding all day.</p>
+    <button onclick="openForm('Full-Day (8 Hours)', 65)">Book</button>
+  </div>
+  <div class="plan">
+    <h2>Weekly Package (5 Days, 2 Hrs/Day)</h2>
+    <p>$89</p>
+    <p>Build skills across the week.</p>
+    <button onclick="openForm('Weekly Package', 90)">Book</button>
+  </div>
+  <div class="plan">
+    <h2>Monthly Package (8 Lessons, 1 Hr Each)</h2>
+    <p>$69</p>
+    <p>Spread out lessons for steady improvement.</p>
+    <button onclick="openForm('Monthly Package', 70)">Book</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="bookingModal" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <span class="close" onclick="closeForm()" aria-label="Close">&times;</span>
+    <h2 id="formTitle">Book</h2>
+    <form id="bookingForm">
+      <input type="hidden" id="plan" name="plan">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="age">Age of Participant:</label>
+      <input type="number" id="age" name="age" required>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+
+<script>
+const recipientEmail = "your@email.com"; // Change to your email
+const modal = document.getElementById('bookingModal');
+const formTitle = document.getElementById('formTitle');
+const planInput = document.getElementById('plan');
+const bookingForm = document.getElementById('bookingForm');
+
+function openForm(plan, price) {
+  modal.style.display = 'block';
+  modal.setAttribute('aria-hidden','false');
+  formTitle.textContent = 'Book ' + plan;
+  planInput.value = plan + ' - $' + price;
+  document.getElementById('name').focus();
+}
+function closeForm() {
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden','true');
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    closeForm();
+  }
+}
+bookingForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const age = document.getElementById('age').value;
+  const plan = planInput.value;
+  const subject = encodeURIComponent('Boogie Boarding Lesson Booking: ' + plan);
+  const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nAge: ' + age + '\nPlan: ' + plan);
+  window.location.href = 'mailto:' + recipientEmail + '?subject=' + subject + '&body=' + body;
+  closeForm();
+});
+</script>
+</body>
+</html>
