@@ -5,46 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Boogie Boarding Lessons</title>
 <style>
-  /* Page base */
   :root{ --sea:#00bcd4; --sea-deep:#0077b6; --muted:#55606a; }
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: linear-gradient(to bottom, #87CEEB, #f0f9ff);
-    margin: 0; color: #003366; -webkit-font-smoothing:antialiased;
+    margin: 0; color: #003366;
   }
-
-  /* ===== LOADING OVERLAY (will load loading.html content) ===== */
+  /* FULLSCREEN LOADING OVERLAY with custom animation */
   #loading-overlay{
-    position:fixed;inset:0;background:linear-gradient(to bottom,#87CEEB,#f0f9ff);
-    display:flex;align-items:center;justify-content:center;z-index:9999;opacity:1;
-    transition:opacity .6s ease;overflow:hidden;
+    position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(to bottom, #87ceeb 0%, #fceabb 100%);
+    transition:opacity .6s ease;opacity:1;overflow:hidden;
   }
   #loading-overlay.fade-out{opacity:0;pointer-events:none;}
-
-  /* Small fallback animation elements (only used if loading.html isn't found) */
-  .wave{width:340px;height:170px;border-radius:50% 50% 0 0;position:relative;overflow:hidden;
-    background: radial-gradient(circle at 30% 30%, var(--sea), var(--sea-deep));}
-  .boogie-board{width:100px;height:26px;background:linear-gradient(90deg,var(--sea),#00d2e1);border-radius:14px;
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);animation:boardJump 2s ease-in-out infinite;box-shadow:0 8px 12px rgba(0,0,0,0.12);}
-  @keyframes boardJump{0%{transform:translate(-50%,-50%) rotate(-12deg)}50%{transform:translate(-50%,-70%) rotate(10deg)}100%{transform:translate(-50%,-50%) rotate(-12deg)}}
+  /* LOADING SCREEN from loading.html inserted inline */
+  * {box-sizing:border-box;}
+  #loading-overlay .loading-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #loading-overlay .sun {
+    position: absolute;
+    top: 40px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #ffe066 0%, #ffcc00 80%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(255,204,0,0.6);
+    animation: rise 6s ease-in-out infinite alternate;
+  }
+  @keyframes rise {0%{transform:translateY(20px);opacity:0.8;}100%{transform:translateY(-10px);opacity:1;}}
+  #loading-overlay .ocean {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60%;
+    overflow: hidden;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  #loading-overlay .wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200"><path fill="%23ffffff" fill-opacity="0.6" d="M0,100 C300,200 900,0 1200,100 L1200,300 L0,300 Z"/></svg>');
+    background-size: 50% 100%;
+    animation: waveMove 6s cubic-bezier(.36,.45,.63,.53) infinite;
+  }
+  #loading-overlay .wave:nth-child(2) {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200"><path fill="%23ffffff" fill-opacity="0.3" d="M0,120 C400,200 800,0 1200,120 L1200,300 L0,300 Z"/></svg>');
+    animation: waveMove 8s cubic-bezier(.36,.45,.63,.53) infinite reverse;
+  }
+  @keyframes waveMove {0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  #loading-overlay .sand {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background: linear-gradient(to top, #f4d77f 0%, #f9e8b5 100%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  #loading-overlay .loading-text {
+    position: absolute;
+    bottom: -40px;
+    font-size: 22px;
+    color: #004466;
+    text-shadow: 0 2px 5px rgba(255,255,255,0.7);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.5;}}
 
   /* ===== NAVBAR ===== */
   .navbar{background:var(--sea);display:flex;justify-content:space-between;align-items:center;padding:10px 20px}
   .nav-left{display:flex;align-items:center}
-  /* BIGGER logo, centered vertically */
   .nav-left img{height:86px;width:auto;display:block;margin-right:16px;align-self:center}
   .nav-links{display:flex;gap:22px}
   .nav-links a{color:white;text-decoration:none;font-weight:700;font-size:1rem}
   .nav-links a:hover{opacity:.9}
 
-  /* Hero */
   .hero-image{width:100%;display:block}
-
-  /* Header title */
   header{background:var(--sea);color:white;padding:24px 20px;text-align:center}
   header h1{margin:0;font-size:2.4rem;letter-spacing:1px}
 
-  /* Pricing grid */
   .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding:30px;max-width:1200px;margin:0 auto}
   .plan{background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 18px rgba(0,0,0,0.10);text-align:center;transition:transform .25s ease}
   .plan:hover{transform:translateY(-6px)}
@@ -54,7 +102,6 @@
   .plan button{margin-top:14px;padding:12px 26px;background:var(--sea);color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:600}
   .plan button:hover{background:#0097a7}
 
-  /* Modal (booking form) */
   .modal{display:none;position:fixed;inset:0;z-index:9000;align-items:flex-start;justify-content:center;padding-top:80px;background:rgba(0,0,0,0.35)}
   .modal-content{background:#fff;border-radius:16px;padding:22px;width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
   .modal-content h2{margin:0 0 6px 0}
@@ -62,17 +109,22 @@
   label{display:block;margin-top:10px;font-weight:700}
   input[type=text],input[type=email],input[type=number]{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin-top:6px}
   input[type=submit]{margin-top:14px;padding:12px;border-radius:10px;background:var(--sea);color:#fff;border:0;cursor:pointer;font-weight:700}
-
-  /* responsive tweaks */
   @media (max-width:940px){.plans{grid-template-columns:repeat(2,1fr);padding:22px}.nav-left img{height:70px}}
   @media (max-width:600px){.plans{grid-template-columns:1fr;padding:16px}.nav-left img{height:56px}}
 </style>
 </head>
 <body>
-  <!-- Loading overlay: content pulled from loading.html if available -->
+  <!-- Loading overlay with inline animation -->
   <div id="loading-overlay" role="status" aria-live="polite" aria-label="Loading">
-    <!-- fallback visuals (replaced by loading.html if present) -->
-    <div class="wave"><div class="boogie-board"></div></div>
+    <div class="loading-container">
+      <div class="sun"></div>
+      <div class="ocean">
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      <div class="sand"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
   </div>
 
   <!-- NAVBAR -->
@@ -86,55 +138,20 @@
     </div>
   </div>
 
-  <!-- HERO IMAGE -->
   <img id="home" src="home.png" alt="Home" class="hero-image">
-
-  <!-- HEADER TITLE -->
   <header>
     <h1>Boogie Boarding Lessons</h1>
   </header>
 
-  <!-- PRICING SECTION -->
   <div id="pricing" class="plans">
-    <div class="plan">
-      <h2>1 Hour Lesson</h2>
-      <div class="price">$9</div>
-      <p>Great for a quick intro to boogie boarding.</p>
-      <button onclick="openForm('1 Hour Lesson', 10)">Book</button>
-    </div>
-    <div class="plan">
-      <h2>2 Hours</h2>
-      <div class="price">$19</div>
-      <p>Double the time, double the fun!</p>
-      <button onclick="openForm('2 Hours', 20)">Book</button>
-    </div>
-    <div class="plan">
-      <h2>Half-Day (4 Hours)</h2>
-      <div class="price">$34 (Discounted)</div>
-      <p>Perfect for learning the ropes.</p>
-      <button onclick="openForm('Half-Day (4 Hours)', 35)">Book</button>
-    </div>
-    <div class="plan">
-      <h2>Full-Day (8 Hours)</h2>
-      <div class="price">$64 (Bigger Discount)</div>
-      <p>Immerse yourself in boogie boarding all day.</p>
-      <button onclick="openForm('Full-Day (8 Hours)', 65)">Book</button>
-    </div>
-    <div class="plan">
-      <h2>Weekly Package (5 Days, 2 Hrs/Day)</h2>
-      <div class="price">$89</div>
-      <p>Build skills across the week.</p>
-      <button onclick="openForm('Weekly Package', 90)">Book</button>
-    </div>
-    <div class="plan">
-      <h2>Monthly Package (8 Lessons, 1 Hr Each)</h2>
-      <div class="price">$69</div>
-      <p>Spread out lessons for steady improvement.</p>
-      <button onclick="openForm('Monthly Package', 70)">Book</button>
-    </div>
+    <div class="plan"><h2>1 Hour Lesson</h2><div class="price">$9</div><p>Great for a quick intro to boogie boarding.</p><button onclick="openForm('1 Hour Lesson', 10)">Book</button></div>
+    <div class="plan"><h2>2 Hours</h2><div class="price">$19</div><p>Double the time, double the fun!</p><button onclick="openForm('2 Hours', 20)">Book</button></div>
+    <div class="plan"><h2>Half-Day (4 Hours)</h2><div class="price">$34 (Discounted)</div><p>Perfect for learning the ropes.</p><button onclick="openForm('Half-Day (4 Hours)', 35)">Book</button></div>
+    <div class="plan"><h2>Full-Day (8 Hours)</h2><div class="price">$64 (Bigger Discount)</div><p>Immerse yourself in boogie boarding all day.</p><button onclick="openForm('Full-Day (8 Hours)', 65)">Book</button></div>
+    <div class="plan"><h2>Weekly Package (5 Days, 2 Hrs/Day)</h2><div class="price">$89</div><p>Build skills across the week.</p><button onclick="openForm('Weekly Package', 90)">Book</button></div>
+    <div class="plan"><h2>Monthly Package (8 Lessons, 1 Hr Each)</h2><div class="price">$69</div><p>Spread out lessons for steady improvement.</p><button onclick="openForm('Monthly Package', 70)">Book</button></div>
   </div>
 
-  <!-- Booking modal -->
   <div id="bookingModal" class="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="formTitle">
       <button class="close" aria-label="Close" onclick="closeForm()">&times;</button>
@@ -154,35 +171,15 @@
   </div>
 
 <script>
-// --------- Loading overlay behavior ---------
-(async function(){
-  const overlay = document.getElementById('loading-overlay');
-  // lock scroll while overlay visible
-  const prevOverflow = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
+const overlay=document.getElementById('loading-overlay');
+const prevOverflow=document.body.style.overflow;
+document.body.style.overflow='hidden';
+setTimeout(()=>{
+  overlay.classList.add('fade-out');
+  setTimeout(()=>{overlay.style.display='none';document.body.style.overflow=prevOverflow||'';},650);
+},3500);
 
-  // Try to fetch user's custom loading.html into the overlay
-  try{
-    const res = await fetch('loading.html', {cache: 'no-store'});
-    if(res.ok){
-      const html = await res.text();
-      overlay.innerHTML = html;
-    }
-  }catch(e){
-    // ignore and keep fallback animation
-    console.warn('loading.html not loaded:', e);
-  }
-
-  // keep overlay for 3.5s then fade
-  setTimeout(()=>{
-    overlay.classList.add('fade-out');
-    // restore scroll after fade-out transition
-    setTimeout(()=>{ overlay.style.display='none'; document.body.style.overflow = prevOverflow || ''; }, 650);
-  }, 3500);
-})();
-
-// --------- Booking modal logic ---------
-const recipientEmail = "your@email.com"; // change
+const recipientEmail = "your@email.com";
 const modal = document.getElementById('bookingModal');
 const formTitle = document.getElementById('formTitle');
 const followupMessage = document.getElementById('followupMessage');
@@ -191,27 +188,23 @@ const bookingForm = document.getElementById('bookingForm');
 
 function openForm(plan, price){
   formTitle.textContent = 'Book ' + plan;
-  followupMessage.textContent = 'We will get back to you as soon as we can.'; // message under title
+  followupMessage.textContent = 'We will get back to you as soon as we can.';
   planInput.value = plan + ' - $' + price;
   modal.style.display = 'flex';
   modal.setAttribute('aria-hidden','false');
   document.getElementById('name').focus();
 }
-function closeForm(){
-  modal.style.display = 'none';
-  modal.setAttribute('aria-hidden','true');
-}
-window.addEventListener('click', (e)=>{ if(e.target === modal) closeForm(); });
-
-bookingForm.addEventListener('submit', function(e){
+function closeForm(){modal.style.display='none';modal.setAttribute('aria-hidden','true');}
+window.addEventListener('click',(e)=>{if(e.target===modal)closeForm();});
+bookingForm.addEventListener('submit',function(e){
   e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const age = document.getElementById('age').value.trim();
-  const plan = planInput.value;
-  const subject = encodeURIComponent('Boogie Boarding Lesson Booking: ' + plan);
-  const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nAge: ' + age + '\nPlan: ' + plan);
-  window.location.href = 'mailto:' + recipientEmail + '?subject=' + subject + '&body=' + body;
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const age=document.getElementById('age').value.trim();
+  const plan=planInput.value;
+  const subject=encodeURIComponent('Boogie Boarding Lesson Booking: '+plan);
+  const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nAge: '+age+'\nPlan: '+plan);
+  window.location.href='mailto:'+recipientEmail+'?subject='+subject+'&body='+body;
   closeForm();
 });
 </script>
