@@ -11,13 +11,11 @@
     background: linear-gradient(to bottom, #87CEEB, #f0f9ff);
     margin: 0; color: #003366;
   }
-  /* FULLSCREEN LOADING OVERLAY with custom animation */
   #loading-overlay{
     position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(to bottom, #87ceeb 0%, #fceabb 100%);
     transition:opacity .6s ease;opacity:1;overflow:hidden;
   }
   #loading-overlay.fade-out{opacity:0;pointer-events:none;}
-  /* LOADING SCREEN from loading.html inserted inline */
   * {box-sizing:border-box;}
   #loading-overlay .loading-container {
     position: relative;
@@ -80,19 +78,15 @@
     animation: pulse 2s infinite;
   }
   @keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.5;}}
-
-  /* ===== NAVBAR ===== */
   .navbar{background:var(--sea);display:flex;justify-content:space-between;align-items:center;padding:10px 20px}
   .nav-left{display:flex;align-items:center}
   .nav-left img{height:86px;width:auto;display:block;margin-right:16px;align-self:center}
   .nav-links{display:flex;gap:22px}
   .nav-links a{color:white;text-decoration:none;font-weight:700;font-size:1rem}
   .nav-links a:hover{opacity:.9}
-
-  .hero-image{width:100%;display:block}
+  .hero-video{width:100%;display:block}
   header{background:var(--sea);color:white;padding:24px 20px;text-align:center}
   header h1{margin:0;font-size:2.4rem;letter-spacing:1px}
-
   .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding:30px;max-width:1200px;margin:0 auto}
   .plan{background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 18px rgba(0,0,0,0.10);text-align:center;transition:transform .25s ease}
   .plan:hover{transform:translateY(-6px)}
@@ -101,7 +95,6 @@
   .plan .price{font-weight:700;color:var(--sea);font-size:1.05rem;margin-top:6px}
   .plan button{margin-top:14px;padding:12px 26px;background:var(--sea);color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:600}
   .plan button:hover{background:#0097a7}
-
   .modal{display:none;position:fixed;inset:0;z-index:9000;align-items:flex-start;justify-content:center;padding-top:80px;background:rgba(0,0,0,0.35)}
   .modal-content{background:#fff;border-radius:16px;padding:22px;width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
   .modal-content h2{margin:0 0 6px 0}
@@ -114,7 +107,6 @@
 </style>
 </head>
 <body>
-  <!-- Loading overlay with inline animation -->
   <div id="loading-overlay" role="status" aria-live="polite" aria-label="Loading">
     <div class="loading-container">
       <div class="sun"></div>
@@ -126,8 +118,6 @@
       <div class="loading-text">Loading...</div>
     </div>
   </div>
-
-  <!-- NAVBAR -->
   <div class="navbar">
     <div class="nav-left">
       <a href="#home"><img src="logo.png" alt="Boogie Board Logo"></a>
@@ -137,12 +127,12 @@
       <a href="#pricing">Pricing</a>
     </div>
   </div>
-
-  <img id="home" src="home.png" alt="Home" class="hero-image">
+  <video id="home" class="hero-video" autoplay muted loop>
+    <source src="home.mp4" type="video/mp4">
+  </video>
   <header>
     <h1>Boogie Boarding Lessons</h1>
   </header>
-
   <div id="pricing" class="plans">
     <div class="plan"><h2>1 Hour Lesson</h2><div class="price">$9</div><p>Great for a quick intro to boogie boarding.</p><button onclick="openForm('1 Hour Lesson', 10)">Book</button></div>
     <div class="plan"><h2>2 Hours</h2><div class="price">$19</div><p>Double the time, double the fun!</p><button onclick="openForm('2 Hours', 20)">Book</button></div>
@@ -151,7 +141,6 @@
     <div class="plan"><h2>Weekly Package (5 Days, 2 Hrs/Day)</h2><div class="price">$89</div><p>Build skills across the week.</p><button onclick="openForm('Weekly Package', 90)">Book</button></div>
     <div class="plan"><h2>Monthly Package (8 Lessons, 1 Hr Each)</h2><div class="price">$69</div><p>Spread out lessons for steady improvement.</p><button onclick="openForm('Monthly Package', 70)">Book</button></div>
   </div>
-
   <div id="bookingModal" class="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="formTitle">
       <button class="close" aria-label="Close" onclick="closeForm()">&times;</button>
@@ -169,7 +158,6 @@
       </form>
     </div>
   </div>
-
 <script>
 const overlay=document.getElementById('loading-overlay');
 const prevOverflow=document.body.style.overflow;
@@ -178,14 +166,12 @@ setTimeout(()=>{
   overlay.classList.add('fade-out');
   setTimeout(()=>{overlay.style.display='none';document.body.style.overflow=prevOverflow||'';},650);
 },3500);
-
 const recipientEmail = "your@email.com";
 const modal = document.getElementById('bookingModal');
 const formTitle = document.getElementById('formTitle');
 const followupMessage = document.getElementById('followupMessage');
 const planInput = document.getElementById('plan');
 const bookingForm = document.getElementById('bookingForm');
-
 function openForm(plan, price){
   formTitle.textContent = 'Book ' + plan;
   followupMessage.textContent = 'We will get back to you as soon as we can.';
