@@ -95,6 +95,10 @@
   .plan .price{font-weight:700;color:var(--sea);font-size:1.05rem;margin-top:6px}
   .plan button{margin-top:14px;padding:12px 26px;background:var(--sea);color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:600}
   .plan button:hover{background:#0097a7}
+  .plan button.unavailable {
+    background: gray;
+    cursor: not-allowed;
+  }
   .modal{display:none;position:fixed;inset:0;z-index:9000;align-items:flex-start;justify-content:center;padding-top:80px;background:rgba(0,0,0,0.35)}
   .modal-content{background:#fff;border-radius:16px;padding:22px;width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
   .modal-content h2{margin:0 0 6px 0}
@@ -138,8 +142,8 @@
     <div class="plan"><h2>2 Hours</h2><div class="price">$19</div><p>Double the time, double the fun!</p><button onclick="openForm('2 Hours', 20)">Book</button></div>
     <div class="plan"><h2>Half-Day (4 Hours)</h2><div class="price">$34 (Discounted)</div><p>Perfect for learning the ropes.</p><button onclick="openForm('Half-Day (4 Hours)', 35)">Book</button></div>
     <div class="plan"><h2>Full-Day (8 Hours)</h2><div class="price">$64 (Bigger Discount)</div><p>Immerse yourself in boogie boarding all day.</p><button onclick="openForm('Full-Day (8 Hours)', 65)">Book</button></div>
-    <div class="plan"><h2>Weekly Package (5 Days, 2 Hrs/Day)</h2><div class="price">$89</div><p>Build skills across the week.</p><button onclick="openForm('Weekly Package', 90)">Book</button></div>
-    <div class="plan"><h2>Monthly Package (8 Lessons, 1 Hr Each)</h2><div class="price">$69</div><p>Spread out lessons for steady improvement.</p><button onclick="openForm('Monthly Package', 70)">Book</button></div>
+    <div class="plan"><h2>Weekly Package (5 Days, 2 Hrs/Day)</h2><div class="price">$89</div><p>Build skills across the week.</p><button class="unavailable" disabled>Unavailable</button></div>
+    <div class="plan"><h2>Monthly Package (8 Lessons, 1 Hr Each)</h2><div class="price">$69</div><p>Spread out lessons for steady improvement.</p><button class="unavailable" disabled>Unavailable</button></div>
   </div>
   <div id="bookingModal" class="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="formTitle">
@@ -192,6 +196,13 @@ bookingForm.addEventListener('submit',function(e){
   const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nAge: '+age+'\nPlan: '+plan);
   window.location.href='mailto:'+recipientEmail+'?subject='+subject+'&body='+body;
   closeForm();
+});
+
+// Ensure video restarts when done
+const heroVideo = document.getElementById('home');
+heroVideo.addEventListener('ended', () => {
+  heroVideo.currentTime = 0;
+  heroVideo.play();
 });
 </script>
 </body>
